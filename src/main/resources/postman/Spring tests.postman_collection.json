@@ -1,0 +1,223 @@
+{
+	"info": {
+		"_postman_id": "14aceaac-2b79-426b-bfc7-2e84232a9803",
+		"name": "Spring tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33881092"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/questions/update/4?title=updated title&text=update question&pictureUrl=changedPicUrl&tags=changedTags",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    username = \"Alex55ad\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/questions/update/4?title=updated title&text=update question&pictureUrl=changedPicUrl&tags=changedTags",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"questions",
+						"update",
+						"4"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "updated title"
+						},
+						{
+							"key": "text",
+							"value": "update question"
+						},
+						{
+							"key": "pictureUrl",
+							"value": "changedPicUrl"
+						},
+						{
+							"key": "tags",
+							"value": "changedTags"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/users/calculateScore?username=EmilyJones",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"example_user\",\r\n    \"email\": \"user@example.com\",\r\n    \"password\": \"P@ssw0rdz\",\r\n    \"type\": \"member\",\r\n    \"score\": 0.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/users/calculateScore?username=EmilyJones",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"users",
+						"calculateScore"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "EmilyJones"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/answers/sortedByScore/1",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"example_user\",\r\n    \"email\": \"user@example.com\",\r\n    \"password\": \"P@ssw0rdz\",\r\n    \"type\": \"member\",\r\n    \"score\": 0.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/answers/sortedByScore/1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"answers",
+						"sortedByScore",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/questions/byUser/JohnDoe",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"example_user\",\r\n    \"email\": \"user@example.com\",\r\n    \"password\": \"P@ssw0rdz\",\r\n    \"type\": \"member\",\r\n    \"score\": 0.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/questions/byUser/JohnDoe",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"questions",
+						"byUser",
+						"JohnDoe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/questions/byUser/JohnDoe",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"example_user\",\r\n    \"email\": \"user@example.com\",\r\n    \"password\": \"P@ssw0rdz\",\r\n    \"type\": \"member\",\r\n    \"score\": 0.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/questions/byUser/JohnDoe",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"questions",
+						"byUser",
+						"JohnDoe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8080/questions/upvote/1?username=JohnDoe",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"example_user\",\r\n    \"email\": \"user@example.com\",\r\n    \"password\": \"P@ssw0rdz\",\r\n    \"type\": \"member\",\r\n    \"score\": 0.0\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/questions/upvote/1?username=JohnDoe",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"questions",
+						"upvote",
+						"1"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "JohnDoe"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
