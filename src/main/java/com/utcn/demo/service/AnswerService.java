@@ -4,6 +4,7 @@ import com.utcn.demo.entity.Answer;
 import com.utcn.demo.entity.Question;
 import com.utcn.demo.entity.User;
 import com.utcn.demo.repository.AnswerRepository;
+import com.utcn.demo.repository.QuestionRepository;
 import com.utcn.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ public class AnswerService {
     private AnswerRepository answerRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private QuestionRepository questionRepository;
 
     public List<Answer> retrieveAnswers() {
         return answerRepository.findAll();
@@ -39,14 +42,22 @@ public class AnswerService {
         return answers;
     }
 
-    public Answer createAnswer(Question question, User author, String text, String pictureUrl) {
+    public Answer createAnswer(Long question, String author, String text, String pictureUrl) {
         Answer answer = new Answer();
-        answer.setQuestion(question);
-        answer.setAuthor(author);
-        answer.setText(text);
-        answer.setImageUrl(pictureUrl);
-        answer.setCreationDatetime(LocalDateTime.now());
-        return answerRepository.save(answer);
+        Optional<Question> question1 = questionRepository.findById(question);
+        if (question1.isPresent()) {
+            Optional<User> user = userRepository.findByUsername(author);
+            if(user.isPresent()) {
+                answer.setQuestion(question1.get());
+                answer.setAuthor(user.get());
+                answer.setText(text);
+                answer.setImageUrl(pictureUrl);
+                answer.setCreationDatetime(LocalDateTime.now());
+                return answerRepository.save(answer);
+            }
+            else throw new RuntimeException("User not found");
+        }
+        else throw new RuntimeException("Question not found");
     }
 
     public Answer updateAnswer(Long id, String text, String pictureUrl) {

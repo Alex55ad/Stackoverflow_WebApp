@@ -36,17 +36,21 @@ public class QuestionService {
             throw new RuntimeException("User not found");
     }
 
-    public Question createQuestion(User author, String title, String text, String pictureUrl, String tags) {
+    public Question createQuestion(String author, String title, String text, String pictureUrl, String tags) {
         // Create new question
-        Question question = new Question();
-        question.setAuthor(author);
-        question.setTitle(title);
-        question.setText(text);
-        question.setCreationDatetime(LocalDateTime.now());
-        question.setPictureUrl(pictureUrl);
-        question.setTags(tags);
+        Optional<User> user = userRepository.findByUsername(author);
+        if(user.isPresent()) {
+            Question question = new Question();
+            question.setAuthor(user.get());
+            question.setTitle(title);
+            question.setText(text);
+            question.setCreationDatetime(LocalDateTime.now());
+            question.setPictureUrl(pictureUrl);
+            question.setTags(tags);
 
-        return questionRepository.save(question);
+            return questionRepository.save(question);
+        }
+        else throw new RuntimeException("User not found");
     }
 
     public Question updateQuestion(Long id, String title, String text, String pictureUrl, String tags) {

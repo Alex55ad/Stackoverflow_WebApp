@@ -42,7 +42,7 @@ public class QuestionController {
     }
 
     @PostMapping("/create")
-    public Question createQuestion(@RequestBody User author,
+    public Question createQuestion(@RequestParam String author,
                                    @RequestParam String title,
                                    @RequestParam String text,
                                    @RequestParam String pictureUrl,

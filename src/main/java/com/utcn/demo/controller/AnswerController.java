@@ -28,8 +28,8 @@ public class AnswerController {
     }
 
     @PostMapping("/create")
-    public Answer createAnswer(@RequestBody Question question,
-                               @RequestBody User author,
+    public Answer createAnswer(@RequestParam Long question,
+                               @RequestParam String author,
                                @RequestParam String text,
                                @RequestParam String pictureUrl) {
         return answerService.createAnswer(question, author, text, pictureUrl);
