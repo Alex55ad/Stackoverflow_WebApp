@@ -15,7 +15,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     List<Question> findByTagsContainingOrderByCreationDatetimeDesc(String tag);
 
-    List<Question> findByAuthorOrderByCreationDatetimeDesc(String username);
+    List<Question> findByAuthorOrderByCreationDatetimeDesc(User username);
 
-    List<Question> findByAuthor(String author);
+    List<Question> findByAuthor(User author);
 }

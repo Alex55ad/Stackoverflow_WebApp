@@ -3,6 +3,7 @@ package com.utcn.demo.service;
 import com.utcn.demo.entity.Question;
 import com.utcn.demo.entity.User;
 import com.utcn.demo.repository.QuestionRepository;
+import com.utcn.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,8 @@ public class QuestionService {
 
     @Autowired
     private QuestionRepository questionRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Question> retrieveQuestions() {
         return questionRepository.findAllByOrderByCreationDatetimeDesc();
@@ -26,7 +29,11 @@ public class QuestionService {
     }
 
     public List<Question> getQuestionsByUser(String username) {
-        return questionRepository.findByAuthorOrderByCreationDatetimeDesc(username);
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent())
+            return questionRepository.findByAuthorOrderByCreationDatetimeDesc(user.get());
+        else
+            throw new RuntimeException("User not found");
     }
 
     public Question createQuestion(User author, String title, String text, String pictureUrl, String tags) {
@@ -96,13 +103,17 @@ public class QuestionService {
 
     public double calculateQuestionScore(String author) {
         double score = 0;
-        List<Question> userQuestions = questionRepository.findByAuthor(author);
-        for (Question question : userQuestions) {
-            int upvotes = question.getUpvotes();
-            int downvotes = question.getDownvotes();
-            score += (upvotes * 2.5) - (downvotes * 1.5);
+        Optional<User> user = userRepository.findByUsername(author);
+        if(user.isPresent()) {
+            List<Question> userQuestions = questionRepository.findByAuthor(user.get());
+            for (Question question : userQuestions) {
+                int upvotes = question.getUpvotes();
+                int downvotes = question.getDownvotes();
+                score += (upvotes * 2.5) - (downvotes * 1.5);
+            }
+            return score;
         }
-        return score;
+        else return 0;
     }
     @Transactional
     public void deleteQuestionById(Long id) {

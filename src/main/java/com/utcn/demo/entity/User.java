@@ -29,12 +29,14 @@ public class User {
     @Column(name = "score",nullable = false)
     private Double score = 0.0;
 
+    /*
     @OneToMany(mappedBy = "author")
     private List<Question> questions;
 
     @OneToMany(mappedBy = "author")
     private List<Answer> answers;
 
+     */
     public User() {
     }
 
@@ -47,13 +49,6 @@ public class User {
         this.score = score;
     }
 
-    public List<Question> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
-    }
 
     public Long getId() {
         return id;

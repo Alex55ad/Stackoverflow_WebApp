@@ -31,3 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
+/Database_Gen.sql
+/SD Assignment 1 Documentation.pdf

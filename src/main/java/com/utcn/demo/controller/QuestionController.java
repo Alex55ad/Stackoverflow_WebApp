@@ -31,12 +31,12 @@ public class QuestionController {
         questionService.deleteQuestionById(id);
     }
 
-    @GetMapping("/{tag}/byTag")
+    @GetMapping("/byTag/{tag}")
     public List<Question> getQuestionsByTag(@PathVariable String tag) {
         return questionService.getQuestionsByTag(tag);
     }
 
-    @GetMapping("/{username}/byUser")
+    @GetMapping("/byUser/{username}")
     public List<Question> getQuestionsByUser(@PathVariable String username) {
         return questionService.getQuestionsByUser(username);
     }
@@ -50,7 +50,7 @@ public class QuestionController {
         return questionService.createQuestion(author, title, text, pictureUrl, tags);
     }
 
-    @PutMapping("/{id}/update")
+    @PutMapping("/update/{id}")
     public Question updateQuestion(@PathVariable Long id,
                                    @RequestParam String title,
                                    @RequestParam String text,
@@ -59,13 +59,13 @@ public class QuestionController {
         return questionService.updateQuestion(id, title, text, pictureUrl, tags);
     }
 
-    @PostMapping("/{questionId}/upvote")
+    @PostMapping("/upvote/{questionId}")
     public Question upvoteQuestion(@PathVariable Long questionId,
                                              @RequestParam String username) {
         return questionService.upvoteQuestion(questionId, username);
     }
 
-    @PostMapping("/{questionId}/downvote")
+    @PostMapping("/downvote/{questionId}")
     public Question downvoteQuestion(@PathVariable Long questionId,
                                                @RequestParam String username) {
         return questionService.downvoteQuestion(questionId, username);

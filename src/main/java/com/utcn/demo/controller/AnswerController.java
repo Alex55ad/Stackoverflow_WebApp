@@ -22,7 +22,7 @@ public class AnswerController {
         return answerService.retrieveAnswers();
     }
 
-    @GetMapping("/{questionId}/sortedByScore")
+    @GetMapping("/sortedByScore/{questionId}")
     public List<Answer> getAnswersSortedByScore(@PathVariable Long questionId) {
         return answerService.getAnswersSortedByScore(questionId);
     }
@@ -35,7 +35,7 @@ public class AnswerController {
         return answerService.createAnswer(question, author, text, pictureUrl);
     }
 
-    @PutMapping("/{id}/update")
+    @PutMapping("/update/{id}")
     public Answer updateAnswer(@PathVariable Long id,
                                @RequestParam String text,
                                @RequestParam String pictureUrl) {
@@ -47,13 +47,13 @@ public class AnswerController {
         return answerService.insertAnswer(answer);
     }
 
-    @PostMapping("/{answerId}/upvote")
+    @PostMapping("/upvote/{answerId}")
     public Answer upvoteAnswer(@PathVariable Long answerId,
                                          @RequestParam String username) {
         return answerService.upvoteAnswer(answerId, username);
     }
 
-    @PostMapping("/{answerId}/downvote")
+    @PostMapping("/downvote/{answerId}")
     public Answer downvoteAnswer(@PathVariable Long answerId,
                                            @RequestParam String username) {
         return answerService.downvoteAnswer(answerId, username);

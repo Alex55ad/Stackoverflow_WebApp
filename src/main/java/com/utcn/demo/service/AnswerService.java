@@ -4,6 +4,7 @@ import com.utcn.demo.entity.Answer;
 import com.utcn.demo.entity.Question;
 import com.utcn.demo.entity.User;
 import com.utcn.demo.repository.AnswerRepository;
+import com.utcn.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,8 @@ public class AnswerService {
 
     @Autowired
     private AnswerRepository answerRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public List<Answer> retrieveAnswers() {
         return answerRepository.findAll();
@@ -90,13 +93,17 @@ public class AnswerService {
 
     public double calculateAnswerScore(String author) {
         double score = 0;
-        List<Answer> userAnswers = answerRepository.findByAuthor(author);
-        for (Answer answer : userAnswers) {
-            int upvotes = answer.getUpvotes();
-            int downvotes = answer.getDownvotes();
-            score += (upvotes * 5) - (downvotes * 2.5);
+        Optional<User> user = userRepository.findByUsername(author);
+        if(user.isPresent()) {
+            List<Answer> userAnswers = answerRepository.findByAuthor(user.get());
+            for (Answer answer : userAnswers) {
+                int upvotes = answer.getUpvotes();
+                int downvotes = answer.getDownvotes();
+                score += (upvotes * 5) - (downvotes * 2.5);
+            }
+            return score;
         }
-        return score;
+        else return 0;
     }
 
     @Transactional

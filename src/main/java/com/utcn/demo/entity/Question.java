@@ -37,10 +37,11 @@ public class Question {
 
     @Column(name = "downvotes",nullable = false)
     private int downvotes = 0;
-
+/*
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Answer> answers;
 
+ */
 
     public Question() {
     }
@@ -55,14 +56,6 @@ public class Question {
         this.tags = tags;
         this.upvotes = upvotes;
         this.downvotes = downvotes;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(List<Answer> answers) {
-        this.answers = answers;
     }
 
     public Long getId() {
