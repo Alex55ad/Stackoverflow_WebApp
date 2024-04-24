@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RequestMapping("/users")
 @RestController
+@CrossOrigin
 public class UserController {
     @Autowired
     private UserService userService;

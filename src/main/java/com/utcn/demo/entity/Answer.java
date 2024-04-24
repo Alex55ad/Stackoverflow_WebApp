@@ -2,6 +2,7 @@ package com.utcn.demo.entity;
 
 import jakarta.persistence.*;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import java.time.LocalDateTime;
@@ -126,5 +127,10 @@ public class Answer {
 
     public void setDownvotes(int downvotes) {
         this.downvotes = downvotes;
+    }
+
+    public String getFormattedCreationDateTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+        return creationDatetime.format(formatter);
     }
 }

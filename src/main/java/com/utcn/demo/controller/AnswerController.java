@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @RequestMapping("/answers")
 @RestController
+@CrossOrigin
 public class AnswerController {
 
     @Autowired

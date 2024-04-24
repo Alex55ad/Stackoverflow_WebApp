@@ -3,6 +3,7 @@ package com.utcn.demo.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
@@ -37,11 +38,7 @@ public class Question {
 
     @Column(name = "downvotes",nullable = false)
     private int downvotes = 0;
-/*
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Answer> answers;
 
- */
 
     public Question() {
     }
@@ -129,4 +126,10 @@ public class Question {
     public void setDownvotes(int downvotes) {
         this.downvotes = downvotes;
     }
+
+    public String getFormattedCreationDateTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+        return creationDatetime.format(formatter);
+    }
+
 }
