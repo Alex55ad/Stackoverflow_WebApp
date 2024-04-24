@@ -30,6 +30,7 @@ import {
   IconCoin,
   IconChevronDown,
 } from '@tabler/icons-react';
+import { useEffect, useState } from 'react';
 import classes from './HeaderMegaMenu.module.css';
 
 
@@ -69,7 +70,15 @@ const mockdata = [
 export function HeaderMegaMenu() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
+  const [user, setUser] = useState(null);
   const theme = useMantineTheme();
+
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
 
   const links = mockdata.map((item) => (
     <UnstyledButton className={classes.subLink} key={item.title}>
@@ -93,11 +102,9 @@ export function HeaderMegaMenu() {
     <Box pb={120}>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
-        <IconHeart
-                    style={{ width: rem(36), height: rem(36) }}
-                    color={theme.colors.red[6]}
-                    stroke={1.5}
-                  />
+          <Box>
+            <Text size="sm">{user ? user.username : 'Not logged in'}</Text>
+          </Box>
           <Group h="100%" gap={0} visibleFrom="sm">
             <a href="/Welcome" className={classes.link}>
               Home
@@ -160,7 +167,7 @@ export function HeaderMegaMenu() {
           <a href="#" className={classes.link}>
             Learn
           </a>
-          <a href="/WelcomeHome" className={classes.link}>
+          <a href="/Welcome" className={classes.link}>
             Test
           </a>
 

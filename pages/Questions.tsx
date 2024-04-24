@@ -28,7 +28,6 @@ export function Questions() {
     fetchQuestions();
   }, []);
 
-
   if (loading) return <p>Loading questions...</p>;
   if (error) return <p>Error loading questions: {error}</p>;
 
@@ -46,11 +45,13 @@ export function Questions() {
             <tbody>
             {questions.map((question) => (
                 <tr key={question.id}>
+                  <td>
+                    <img src={question.pictureUrl} alt="Question Image" style={{ width: '200px', height: '200px' }} />
+                  </td>
                   <td style={{ textAlign: 'left', paddingBottom: '20px' }}>
                     <div>
-                      <Text size="lg" weight="bold">{question.title}</Text>
-                      <img src={question.imageUrl} alt="Question Image" />
-                      <Text size="sm" color="blue">{question.author.username} {' ('} {question.author.score} {')'}</Text>
+                      <Text size="lg" style={{fontSize: 20}}>{question.title}</Text>
+                      <Text size="sm" color="blue">{question.author.username} {' (User Score:'} {question.author.score}{')'}</Text>
                       <Text size="sm" color="green">{question.tags}</Text>
                       <ThumbsUpIcon size={16} /> {question.upvotes} {'   '}
                       <ThumbsdownIcon size={16} /> {question.downvotes}
@@ -58,7 +59,7 @@ export function Questions() {
                     </div>
                   </td>
                   <td>
-                    <Text size="sm">{question.creationDateTime}</Text>
+                    <Text size="sm">{question.formattedCreationDateTime}</Text>
                   </td>
                 </tr>
             ))}
@@ -68,6 +69,5 @@ export function Questions() {
       </>
   );
 }
-
 
 export default Questions;

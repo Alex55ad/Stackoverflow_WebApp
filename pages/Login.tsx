@@ -11,21 +11,15 @@ const Login = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await fetch('http://localhost:8080/users/login', {
+            const response = await fetch(`http://localhost:8080/users/login?username=${username}&password=${password}`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: username,
-                    password: password,
-                }),
             });
-
             if (response.ok) {
                 // If login is successful, do something (e.g., redirect)
                 const data = await response.json();
+                localStorage.setItem('user', JSON.stringify(data));
                 console.log('Logged in user:', data);
+
             } else {
                 const errorMessage = await response.text();
                 setError(errorMessage);

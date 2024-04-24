@@ -1,9 +1,8 @@
 import React from 'react';
 import { Title, Text, Anchor } from '@mantine/core';
 import classes from './Welcome.module.css';
-import { HeaderMegaMenu } from '../components/HeaderMegaMenu/HeaderMegaMenu';
-import { NavbarNested } from '../components/NavbarNested/NavbarNested';
-import { TableReviews } from '../components/TableReviews/TableReviews';
+import { HeaderMegaMenu } from '@/components/HeaderMegaMenu/HeaderMegaMenu';
+import { NavbarNested } from '@/components/NavbarNested/NavbarNested';
 
 export function Welcome() {
     return (

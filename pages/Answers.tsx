@@ -28,7 +28,6 @@ export function Questions() {
     fetchAnswers();
   }, []);
 
-
   if (loading) return <p>Loading questions...</p>;
   if (error) return <p>Error loading questions: {error}</p>;
 
@@ -46,19 +45,21 @@ export function Questions() {
             <tbody>
             {answers.map((answer) => (
                 <tr key={answer.id}>
+                <td>
+                  <img src={answer.pictureUrl} alt="Answer Image" style={{ width: '200px', height: '200px' }} />
+                </td>
                   <td style={{ textAlign: 'left', paddingBottom: '20px' }}>
                     <div>
-                      <Text size="lg" weight="bold">{answer.title}</Text>
-                      <img src={answer.imageUrl} alt="Answer Image" />
+                      <Text size="lg" style={{fontSize: 20}}>{answer.title}</Text>
                       <Text size="sm" color="purple">Re: {answer.question.title}</Text>
-                      <Text size="sm" color="blue">{answer.author.username} {' ('} {answer.author.score} {')'}</Text>
+                      <Text size="sm" color="blue">{answer.author.username} {' (User Score'} {answer.author.score}{')'}</Text>
                       <ThumbsUpIcon size={16} /> {answer.upvotes} {'   '}
                       <ThumbsdownIcon size={16} /> {answer.downvotes}
                       <Text size="sm">{answer.text}</Text>
                     </div>
                   </td>
                   <td>
-                    <Text size="sm">{answer.creationDateTime}</Text>
+                    <Text size="sm">{answer.formattedCreationDateTime}</Text>
                   </td>
                 </tr>
             ))}
@@ -68,6 +69,4 @@ export function Questions() {
       </>
   );
 }
-
-
 export default Questions;

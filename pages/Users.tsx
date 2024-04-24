@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Title, Text, Anchor, Container, Button, TextInput, Badge } from '@mantine/core';
 import classes from './Test.module.css';
-import { HeaderMegaMenu } from '../components/HeaderMegaMenu/HeaderMegaMenu';
+import { HeaderMegaMenu } from '@/components/HeaderMegaMenu/HeaderMegaMenu';
 import { ThumbsupIcon, ThumbsdownIcon } from '@primer/octicons-react'; // Import icons from Octicons
 import { NavbarNested } from '../components/NavbarNested/NavbarNested';
 import {ThumbsUpIcon} from "@storybook/icons";

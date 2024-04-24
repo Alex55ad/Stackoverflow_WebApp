@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, TextInput, Button, Title, Text } from '@mantine/core';
 import { useHistory } from 'react-router-dom';
 import { HeaderMegaMenu } from '@/components/HeaderMegaMenu/HeaderMegaMenu';
-import classes from "@/components/HeaderMegaMenu/HeaderMegaMenu.module.css";
+import classes from '@/components/HeaderMegaMenu/HeaderMegaMenu.module.css';
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -61,8 +61,8 @@ const Signup = () => {
                   style={{ marginBottom: '20px' }}
                 />
                 <Text size="sm" color="dimmed" style={{ marginBottom: '10px' }}>
-                    Password must be at least 7 characters long and contain at least one uppercase character,
-                    and one special character(_!#$%&'*+/=?`~^.-)
+                    Password must be at least 7 characters long and contain at least,
+                    one special character (_!#$%&'*+/=?`~^.-)
                 </Text>
                 <TextInput
                   label="Email"
@@ -72,8 +72,9 @@ const Signup = () => {
                   style={{ marginBottom: '20px' }}
                 />
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                <Button onClick={handleSignup}>Signup</Button>
+                <Button onClick={handleSignup}>Signup
                     <a href="/Welcome" className={classes.link}> </a>
+                </Button>
             </Container>
         </>
     );
