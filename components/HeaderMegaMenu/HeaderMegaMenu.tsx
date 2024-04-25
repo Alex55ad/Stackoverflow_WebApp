@@ -73,12 +73,15 @@ export function HeaderMegaMenu() {
   const [user, setUser] = useState(null);
   const theme = useMantineTheme();
 
+
   useEffect(() => {
     const userData = localStorage.getItem('user');
     if (userData) {
       setUser(JSON.parse(userData));
     }
   }, []);
+
+  const isModerator = user && user.type === 'moderator';
 
   const links = mockdata.map((item) => (
     <UnstyledButton className={classes.subLink} key={item.title}>
@@ -106,7 +109,7 @@ export function HeaderMegaMenu() {
             <Text size="sm">{user ? user.username : 'Not logged in'}</Text>
           </Box>
           <Group h="100%" gap={0} visibleFrom="sm">
-            <a href="/Welcome" className={classes.link}>
+            <a href="/" className={classes.link}>
               Home
             </a>
                 <a href="/Questions" className={classes.link}>
@@ -122,6 +125,11 @@ export function HeaderMegaMenu() {
             <a href="/Users" className={classes.link}>
               Users
             </a>
+            {isModerator && (
+          <a href="/Admin" className={classes.link}>
+            Admin Panel
+          </a>
+        )}
           </Group>
 
           <Group visibleFrom="sm">

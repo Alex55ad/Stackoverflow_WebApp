@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Container, TextInput, Button } from '@mantine/core';
 import {Text, Title} from "@mantine/core/lib";
+import { redirect } from 'react-router-dom';
 import classes from "@/pages/Test.module.css";
 import {HeaderMegaMenu} from "@/components/HeaderMegaMenu/HeaderMegaMenu";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -15,7 +17,6 @@ const Login = () => {
                 method: 'POST',
             });
             if (response.ok) {
-                // If login is successful, do something (e.g., redirect)
                 const data = await response.json();
                 localStorage.setItem('user', JSON.stringify(data));
                 console.log('Logged in user:', data);
@@ -49,7 +50,10 @@ const Login = () => {
                 style={{ marginBottom: '20px' }}
             />
             {error && <p style={{ color: 'red' }}>{error}</p>}
-            <Button onClick={handleLogin}>Login</Button>
+            <a href="/Welcome" className={classes.link}> 
+                    <Button onClick={handleLogin}>Login
+                    </Button>
+                </a>
         </Container>
     );
 };

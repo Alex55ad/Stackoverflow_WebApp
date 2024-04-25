@@ -14,7 +14,6 @@ export function Welcome() {
                 </Text>
             </Title>
             <HeaderMegaMenu />
-            <NavbarNested />
             <Text color="dimmed" ta="center" size="lg" maw={580} mx="auto" mt="xl">
                 Welcome to the StackOverflow inspired WebApp, StackUnderflow. Here, you can write questions
                 and respond to other questions, helping build a community of knowledge-sharing.

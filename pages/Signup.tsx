@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { Container, TextInput, Button, Title, Text } from '@mantine/core';
-import { useHistory } from 'react-router-dom';
 import { HeaderMegaMenu } from '@/components/HeaderMegaMenu/HeaderMegaMenu';
 import classes from '@/components/HeaderMegaMenu/HeaderMegaMenu.module.css';
+import { useNavigate } from "react-router-dom";
+
 
 const Signup = () => {
     const [username, setUsername] = useState('');
@@ -28,6 +29,7 @@ const Signup = () => {
                 // If signup is successful, do something (e.g., redirect)
                 const data = await response.json();
                 console.log('Signed up user:', data);
+
             } else {
                 const errorMessage = await response.text();
                 setError(errorMessage);
@@ -72,9 +74,10 @@ const Signup = () => {
                   style={{ marginBottom: '20px' }}
                 />
                 {error && <p style={{ color: 'red' }}>{error}</p>}
-                <Button onClick={handleSignup}>Signup
-                    <a href="/Welcome" className={classes.link}> </a>
-                </Button>
+                <a href="/Welcome" className={classes.link}> 
+                    <Button onClick={handleSignup}>Signup
+                    </Button>
+                </a>
             </Container>
         </>
     );

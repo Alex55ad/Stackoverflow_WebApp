@@ -11,6 +11,7 @@ export function Questions() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
@@ -24,9 +25,29 @@ export function Questions() {
         setLoading(false);
       }
     };
-
     fetchQuestions();
   }, []);
+
+  useEffect(() => {
+    const updateUserScores = async () => {
+      try {
+        // Loop through each question and extract the username of the author
+        const usernames = questions.map(question => question.author.username);
+        
+        for (const username of usernames) {
+          await fetch(`http://localhost:8080/users/calculateScore?username=${username}`,{method: 'POST',});
+        }
+      } catch (error) {
+        console.error('Error updating user scores:', error);
+      }
+    };
+
+    // Call the function to update user scores when questions change
+    if (questions.length > 0) {
+      updateUserScores();
+    }
+  }, [questions]);
+
 
   if (loading) return <p>Loading questions...</p>;
   if (error) return <p>Error loading questions: {error}</p>;
