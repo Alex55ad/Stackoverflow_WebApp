@@ -4,6 +4,7 @@ import com.utcn.demo.entity.Answer;
 import com.utcn.demo.entity.Question;
 import com.utcn.demo.entity.User;
 import com.utcn.demo.service.AnswerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +14,9 @@ import java.util.Optional;
 @RequestMapping("/answers")
 @RestController
 @CrossOrigin
+@RequiredArgsConstructor
 public class AnswerController {
-
-    @Autowired
-    private AnswerService answerService;
+    private final AnswerService answerService;
 
     @GetMapping("/getAllAnswers")
     public List<Answer> retrieveAllAnswers() {

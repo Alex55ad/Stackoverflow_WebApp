@@ -1,12 +1,20 @@
 package com.utcn.demo.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "questions")
 public class Question {
 
@@ -38,94 +46,6 @@ public class Question {
 
     @Column(name = "downvotes",nullable = false)
     private int downvotes = 0;
-
-
-    public Question() {
-    }
-
-    public Question(Long id, User author, String title, String text, LocalDateTime creationDatetime, String pictureUrl, String tags, int upvotes, int downvotes) {
-        this.id = id;
-        this.author = author;
-        this.title = title;
-        this.text = text;
-        this.creationDatetime = creationDatetime;
-        this.pictureUrl = pictureUrl;
-        this.tags = tags;
-        this.upvotes = upvotes;
-        this.downvotes = downvotes;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public LocalDateTime getCreationDatetime() {
-        return creationDatetime;
-    }
-
-    public void setCreationDatetime(LocalDateTime creationDatetime) {
-        this.creationDatetime = creationDatetime;
-    }
-
-    public String getPictureUrl() {
-        return pictureUrl;
-    }
-
-    public void setPictureUrl(String pictureUrl) {
-        this.pictureUrl = pictureUrl;
-    }
-
-    public String getTags() {
-        return tags;
-    }
-
-    public void setTags(String tags) {
-        this.tags = tags;
-    }
-
-    public int getUpvotes() {
-        return upvotes;
-    }
-
-    public void setUpvotes(int upvotes) {
-        this.upvotes = upvotes;
-    }
-
-    public int getDownvotes() {
-        return downvotes;
-    }
-
-    public void setDownvotes(int downvotes) {
-        this.downvotes = downvotes;
-    }
 
     public String getFormattedCreationDateTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;

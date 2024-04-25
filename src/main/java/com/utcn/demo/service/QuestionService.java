@@ -4,6 +4,7 @@ import com.utcn.demo.entity.Question;
 import com.utcn.demo.entity.User;
 import com.utcn.demo.repository.QuestionRepository;
 import com.utcn.demo.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,12 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class QuestionService {
-
-    @Autowired
-    private QuestionRepository questionRepository;
-    @Autowired
-    private UserRepository userRepository;
+    private final QuestionRepository questionRepository;
+    private final UserRepository userRepository;
 
     public List<Question> retrieveQuestions() {
         return questionRepository.findAllByOrderByCreationDatetimeDesc();
@@ -72,7 +71,7 @@ public class QuestionService {
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
         if (optionalQuestion.isPresent()) {
             Question question = optionalQuestion.get();
-            if (!question.getAuthor().equals(username)) {
+            if (!question.getAuthor().getUsername().equals(username)) {
                     int upvotes = question.getUpvotes();
                     question.setUpvotes(upvotes + 1);
                     return questionRepository.save(question);
@@ -88,7 +87,7 @@ public class QuestionService {
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
         if (optionalQuestion.isPresent()) {
             Question question = optionalQuestion.get();
-            if (!question.getAuthor().equals(username)) {
+            if (!question.getAuthor().getUsername().equals(username)) {
                 int downvotes = question.getDownvotes();
                 question.setUpvotes(downvotes + 1);
                 return questionRepository.save(question);
@@ -110,14 +109,14 @@ public class QuestionService {
         Optional<User> user = userRepository.findByUsername(author);
         if(user.isPresent()) {
             List<Question> userQuestions = questionRepository.findByAuthor(user.get());
-            for (Question question : userQuestions) {
-                int upvotes = question.getUpvotes();
-                int downvotes = question.getDownvotes();
-                score += (upvotes * 2.5) - (downvotes * 1.5);
-            }
-            return score;
+            if (!userQuestions.isEmpty())
+                for (Question question : userQuestions) {
+                    int upvotes = question.getUpvotes();
+                    int downvotes = question.getDownvotes();
+                    score += (upvotes * 2.5) - (downvotes * 1.5);
+                }
         }
-        else return 0;
+        return score;
     }
     @Transactional
     public void deleteQuestionById(Long id) {

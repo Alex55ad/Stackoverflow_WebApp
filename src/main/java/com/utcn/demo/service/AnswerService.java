@@ -6,6 +6,7 @@ import com.utcn.demo.entity.User;
 import com.utcn.demo.repository.AnswerRepository;
 import com.utcn.demo.repository.QuestionRepository;
 import com.utcn.demo.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,14 +18,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AnswerService {
 
-    @Autowired
-    private AnswerRepository answerRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
+    private final UserRepository userRepository;
+    private final QuestionRepository questionRepository;
 
     public List<Answer> retrieveAnswers() {
         return answerRepository.findAll();
@@ -76,7 +75,7 @@ public class AnswerService {
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
         if (optionalAnswer.isPresent()) {
             Answer answer = optionalAnswer.get();
-            if (!answer.getAuthor().equals(username)) {
+            if (!answer.getAuthor().getUsername().equals(username)) {
                 int upvotes = answer.getUpvotes();
                 answer.setUpvotes(upvotes + 1);
                 return answerRepository.save(answer);
@@ -91,7 +90,7 @@ public class AnswerService {
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
         if (optionalAnswer.isPresent()) {
             Answer answer = optionalAnswer.get();
-            if (!answer.getAuthor().equals(username)) {
+            if (!answer.getAuthor().getUsername().equals(username)) {
                 int downvotes = answer.getDownvotes();
                 answer.setDownvotes(downvotes + 1);
                 return answerRepository.save(answer);
@@ -107,14 +106,15 @@ public class AnswerService {
         Optional<User> user = userRepository.findByUsername(author);
         if(user.isPresent()) {
             List<Answer> userAnswers = answerRepository.findByAuthor(user.get());
-            for (Answer answer : userAnswers) {
-                int upvotes = answer.getUpvotes();
-                int downvotes = answer.getDownvotes();
-                score += (upvotes * 5) - (downvotes * 2.5);
-            }
-            return score;
+            if(!userAnswers.isEmpty())
+                for (Answer answer : userAnswers) {
+                    int upvotes = answer.getUpvotes();
+                    int downvotes = answer.getDownvotes();
+                    score += (upvotes * 5) - (downvotes * 2.5);
+                }
+
         }
-        else return 0;
+        return score;
     }
 
     @Transactional

@@ -7,6 +7,7 @@ import com.utcn.demo.repository.AnswerRepository;
 import com.utcn.demo.repository.QuestionRepository;
 import com.utcn.demo.repository.UserRepository;
 import com.utcn.demo.service.validations.UserValidator;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 //import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,14 +16,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    UserValidator userValidator = new UserValidator();
-    @Autowired
-   AnswerService answerService;
-    @Autowired
-   QuestionService questionService;
-    @Autowired
-    private UserRepository userRepository;
+   private final UserValidator userValidator = new UserValidator();
+   private final AnswerService answerService;
+   private final QuestionService questionService;
+   private final UserRepository userRepository;
    // PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 
 
@@ -46,6 +45,7 @@ public class UserService {
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             //if (passwordEncoder.matches(password, user.getPassword())) {
+            if(user.getPassword().equals(password))
                 return user;
            // }
         }
