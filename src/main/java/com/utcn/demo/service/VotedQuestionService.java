@@ -40,4 +40,12 @@ public class VotedQuestionService {
             votedQuestionRepository.deleteById(id);
         }
     }
+
+    @Transactional
+    public VotedQuestion updateVotedQuestion(Long id, String voteType) {
+        VotedQuestion votedQuestion = votedQuestionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Voted question not found"));
+        votedQuestion.setVoteType(VoteType.valueOf(voteType.toUpperCase()));
+        return votedQuestionRepository.save(votedQuestion);
+    }
 }

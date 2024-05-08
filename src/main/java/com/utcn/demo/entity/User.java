@@ -32,7 +32,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type",nullable = false)
-    private UserType type = UserType.member;
+    private UserType type = UserType.MEMBER;
 
     @Column(name = "score",nullable = false)
     private Double score = 0.0;

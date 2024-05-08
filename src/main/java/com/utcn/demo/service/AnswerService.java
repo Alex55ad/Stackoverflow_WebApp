@@ -1,11 +1,10 @@
 package com.utcn.demo.service;
 
-import com.utcn.demo.entity.Answer;
-import com.utcn.demo.entity.Question;
-import com.utcn.demo.entity.User;
+import com.utcn.demo.entity.*;
 import com.utcn.demo.repository.AnswerRepository;
 import com.utcn.demo.repository.QuestionRepository;
 import com.utcn.demo.repository.UserRepository;
+import com.utcn.demo.repository.VotedAnswerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +23,7 @@ public class AnswerService {
     private final AnswerRepository answerRepository;
     private final UserRepository userRepository;
     private final QuestionRepository questionRepository;
+    private final VotedAnswerRepository votedAnswerRepository;
 
     public List<Answer> retrieveAnswers() {
         return answerRepository.findAll();
@@ -71,14 +71,39 @@ public class AnswerService {
         }
     }
 
+    @Transactional
     public Answer upvoteAnswer(Long answerId, String username) {
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
         if (optionalAnswer.isPresent()) {
             Answer answer = optionalAnswer.get();
             if (!answer.getAuthor().getUsername().equals(username)) {
-                int upvotes = answer.getUpvotes();
-                answer.setUpvotes(upvotes + 1);
-                return answerRepository.save(answer);
+                User user = userRepository.findByUsername(username)
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+                Optional<VotedAnswer> existingVote = votedAnswerRepository.findByUserAndAnswer(user, answer);
+                if (existingVote.isPresent()) {
+                    VotedAnswer votedAnswer = existingVote.get();
+                    if (votedAnswer.getVoteType() == VoteType.UPVOTE) {
+                        // Remove upvote
+                        votedAnswerRepository.delete(votedAnswer);
+                        answer.setUpvotes(answer.getUpvotes() - 1);
+                    } else {
+                        // Change downvote to upvote
+                        votedAnswer.setVoteType(VoteType.UPVOTE);
+                        votedAnswerRepository.save(votedAnswer);
+                        answer.setUpvotes(answer.getUpvotes() + 1);
+                        answer.setDownvotes(answer.getDownvotes() - 1);
+                    }
+                } else {
+                    // Insert new upvote
+                    VotedAnswer newVote = new VotedAnswer();
+                    newVote.setUser(user);
+                    newVote.setAnswer(answer);
+                    newVote.setVoteType(VoteType.UPVOTE);
+                    votedAnswerRepository.save(newVote);
+                    answer.setUpvotes(answer.getUpvotes() + 1);
+                }
+                answerRepository.save(answer);
+                return answer;
             } else {
                 throw new RuntimeException("You cannot upvote your own answer");
             }
@@ -86,14 +111,39 @@ public class AnswerService {
         return null;
     }
 
+    @Transactional
     public Answer downvoteAnswer(Long answerId, String username) {
         Optional<Answer> optionalAnswer = answerRepository.findById(answerId);
         if (optionalAnswer.isPresent()) {
             Answer answer = optionalAnswer.get();
             if (!answer.getAuthor().getUsername().equals(username)) {
-                int downvotes = answer.getDownvotes();
-                answer.setDownvotes(downvotes + 1);
-                return answerRepository.save(answer);
+                User user = userRepository.findByUsername(username)
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+                Optional<VotedAnswer> existingVote = votedAnswerRepository.findByUserAndAnswer(user, answer);
+                if (existingVote.isPresent()) {
+                    VotedAnswer votedAnswer = existingVote.get();
+                    if (votedAnswer.getVoteType() == VoteType.DOWNVOTE) {
+                        // Remove downvote
+                        votedAnswerRepository.delete(votedAnswer);
+                        answer.setDownvotes(answer.getDownvotes() - 1);
+                    } else {
+                        // Change upvote to downvote
+                        votedAnswer.setVoteType(VoteType.DOWNVOTE);
+                        votedAnswerRepository.save(votedAnswer);
+                        answer.setDownvotes(answer.getDownvotes() + 1);
+                        answer.setUpvotes(answer.getUpvotes() - 1);
+                    }
+                } else {
+                    // Insert new downvote
+                    VotedAnswer newVote = new VotedAnswer();
+                    newVote.setUser(user);
+                    newVote.setAnswer(answer);
+                    newVote.setVoteType(VoteType.DOWNVOTE);
+                    votedAnswerRepository.save(newVote);
+                    answer.setDownvotes(answer.getDownvotes() + 1);
+                }
+                answerRepository.save(answer);
+                return answer;
             } else {
                 throw new RuntimeException("You cannot downvote your own answer");
             }

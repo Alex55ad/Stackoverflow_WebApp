@@ -2,8 +2,11 @@ package com.utcn.demo.service;
 
 import com.utcn.demo.entity.Question;
 import com.utcn.demo.entity.User;
+import com.utcn.demo.entity.VoteType;
+import com.utcn.demo.entity.VotedQuestion;
 import com.utcn.demo.repository.QuestionRepository;
 import com.utcn.demo.repository.UserRepository;
+import com.utcn.demo.repository.VotedQuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ import java.util.Optional;
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
+    private final VotedQuestionRepository votedQuestionRepository;
 
     public List<Question> retrieveQuestions() {
         return questionRepository.findAllByOrderByCreationDatetimeDesc();
@@ -67,33 +71,81 @@ public class QuestionService {
         }
     }
 
+    @Transactional
     public Question upvoteQuestion(Long questionId, String username) {
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
         if (optionalQuestion.isPresent()) {
             Question question = optionalQuestion.get();
             if (!question.getAuthor().getUsername().equals(username)) {
-                    int upvotes = question.getUpvotes();
-                    question.setUpvotes(upvotes + 1);
-                    return questionRepository.save(question);
+                User user = userRepository.findByUsername(username)
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+                Optional<VotedQuestion> existingVote = votedQuestionRepository.findByUserAndQuestion(user, question);
+                if (existingVote.isPresent()) {
+                    VotedQuestion votedQuestion = existingVote.get();
+                    if (votedQuestion.getVoteType() == VoteType.UPVOTE) {
+                        // Remove upvote
+                        votedQuestionRepository.delete(votedQuestion);
+                        question.setUpvotes(question.getUpvotes() - 1);
+                    } else {
+                        // Change downvote to upvote
+                        votedQuestion.setVoteType(VoteType.UPVOTE);
+                        votedQuestionRepository.save(votedQuestion);
+                        question.setUpvotes(question.getUpvotes() + 1);
+                        question.setDownvotes(question.getDownvotes() - 1);
+                    }
+                } else {
+                    // Insert new upvote
+                    VotedQuestion newVote = new VotedQuestion();
+                    newVote.setUser(user);
+                    newVote.setQuestion(question);
+                    newVote.setVoteType(VoteType.UPVOTE);
+                    votedQuestionRepository.save(newVote);
+                    question.setUpvotes(question.getUpvotes() + 1);
                 }
-                else {
+                questionRepository.save(question);
+                return question;
+            } else {
                 throw new RuntimeException("You cannot upvote your own question");
             }
         }
         return null;
     }
 
+    @Transactional
     public Question downvoteQuestion(Long questionId, String username) {
         Optional<Question> optionalQuestion = questionRepository.findById(questionId);
         if (optionalQuestion.isPresent()) {
             Question question = optionalQuestion.get();
             if (!question.getAuthor().getUsername().equals(username)) {
-                int downvotes = question.getDownvotes();
-                question.setUpvotes(downvotes + 1);
-                return questionRepository.save(question);
-            }
-            else {
-                throw new RuntimeException("You cannot upvote your own question");
+                User user = userRepository.findByUsername(username)
+                        .orElseThrow(() -> new RuntimeException("User not found"));
+                Optional<VotedQuestion> existingVote = votedQuestionRepository.findByUserAndQuestion(user, question);
+                if (existingVote.isPresent()) {
+                    VotedQuestion votedQuestion = existingVote.get();
+                    if (votedQuestion.getVoteType() == VoteType.DOWNVOTE) {
+                        // Remove downvote
+                        votedQuestionRepository.delete(votedQuestion);
+                        question.setDownvotes(question.getDownvotes() - 1);
+                    } else {
+                        // Change upvote to downvote
+                        votedQuestion.setVoteType(VoteType.DOWNVOTE);
+                        votedQuestionRepository.save(votedQuestion);
+                        question.setDownvotes(question.getDownvotes() + 1);
+                        question.setUpvotes(question.getUpvotes() - 1);
+                    }
+                } else {
+                    // Insert new downvote
+                    VotedQuestion newVote = new VotedQuestion();
+                    newVote.setUser(user);
+                    newVote.setQuestion(question);
+                    newVote.setVoteType(VoteType.DOWNVOTE);
+                    votedQuestionRepository.save(newVote);
+                    question.setDownvotes(question.getDownvotes() + 1);
+                }
+                questionRepository.save(question);
+                return question;
+            } else {
+                throw new RuntimeException("You cannot downvote your own question");
             }
         }
         return null;
