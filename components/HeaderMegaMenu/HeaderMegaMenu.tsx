@@ -81,7 +81,7 @@ export function HeaderMegaMenu() {
     }
   }, []);
 
-  const isModerator = user && user.type === 'moderator';
+  const isModerator = user && user.type === 'MODERATOR';
 
   const links = mockdata.map((item) => (
     <UnstyledButton className={classes.subLink} key={item.title}>
@@ -106,7 +106,7 @@ export function HeaderMegaMenu() {
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
           <Box>
-            <Text size="sm">{user ? user.username : 'Not logged in'}</Text>
+            <Text size="sm">{user ? user.username: 'Not logged in'}</Text>
           </Box>
           <Group h="100%" gap={0} visibleFrom="sm">
             <a href="/" className={classes.link}>
@@ -122,14 +122,11 @@ export function HeaderMegaMenu() {
             <a href="/Answers" className={classes.link}>
               Answers
             </a>
+            {isModerator && (
             <a href="/Users" className={classes.link}>
               Users
             </a>
-            {isModerator && (
-          <a href="/Admin" className={classes.link}>
-            Admin Panel
-          </a>
-        )}
+            )}
           </Group>
 
           <Group visibleFrom="sm">
