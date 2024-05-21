@@ -27,6 +27,9 @@ public class QuestionService {
         return questionRepository.findAllByOrderByCreationDatetimeDesc();
     }
 
+    public Question getQuestionById(Long id){
+        return questionRepository.getQuestionById(id);
+    }
     public List<Question> getQuestionsByTag(String tag) {
         return questionRepository.findByTagsContainingOrderByCreationDatetimeDesc(tag);
     }
@@ -56,20 +59,20 @@ public class QuestionService {
         else throw new RuntimeException("User not found");
     }
 
-    public Question updateQuestion(Long id, String title, String text, String pictureUrl, String tags) {
-        Optional<Question> optionalQuestion = questionRepository.findById(id);
+    public Question updateQuestion(Question question) {
+        Optional<Question> optionalQuestion = questionRepository.findById(question.getId());
         if (optionalQuestion.isPresent()) {
-            Question question = optionalQuestion.get();
-            question.setTitle(title);
-            question.setText(text);
-            question.setPictureUrl(pictureUrl);
-            question.setTags(tags);
-
-            return questionRepository.save(question);
+            Question quest = optionalQuestion.get();
+            quest.setTitle(question.getTitle());
+            quest.setText(question.getText());
+            quest.setPictureUrl(question.getPictureUrl());
+            quest.setTags(question.getTags());
+            return questionRepository.save(quest);
         } else {
             throw new RuntimeException("Question not found");
         }
     }
+
 
     @Transactional
     public Question upvoteQuestion(Long questionId, String username) {

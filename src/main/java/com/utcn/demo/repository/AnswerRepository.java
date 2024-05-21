@@ -11,6 +11,8 @@ import java.util.List;
 
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
+
+    Answer getAnswerById(Long id);
     List<Answer> findByQuestionIdOrderByCreationDatetimeDesc(Long questionId);
 
     List<Answer> findByAuthor(User author);

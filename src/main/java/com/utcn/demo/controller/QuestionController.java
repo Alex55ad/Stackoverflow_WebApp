@@ -42,6 +42,11 @@ public class QuestionController {
         return questionService.getQuestionsByUser(username);
     }
 
+    @GetMapping("/getById/{questionId}")
+    public Question getQuestionById(@PathVariable Long questionId){
+       return questionService.getQuestionById(questionId);
+    }
+
     @PostMapping("/create")
     public Question createQuestion(@RequestParam String author,
                                    @RequestParam String title,
@@ -51,13 +56,9 @@ public class QuestionController {
         return questionService.createQuestion(author, title, text, pictureUrl, tags);
     }
 
-    @PutMapping("/update/{id}")
-    public Question updateQuestion(@PathVariable Long id,
-                                   @RequestParam String title,
-                                   @RequestParam String text,
-                                   @RequestParam String pictureUrl,
-                                   @RequestParam String tags) {
-        return questionService.updateQuestion(id, title, text, pictureUrl, tags);
+    @PutMapping("/update")
+    public Question updateQuestion(@RequestBody Question question) {
+        return questionService.updateQuestion(question);
     }
 
     @PostMapping("/upvote/{questionId}")

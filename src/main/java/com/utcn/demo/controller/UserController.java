@@ -45,6 +45,8 @@ public class UserController {
         return userService.createUser(user);
     }
 
+
+
     @PostMapping("/calculateScore")
     public User calculateScore(@RequestParam String username){
         return userService.updateUserScore(username);

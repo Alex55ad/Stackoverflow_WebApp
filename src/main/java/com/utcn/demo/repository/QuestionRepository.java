@@ -11,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
+    Question getQuestionById(Long id);
     List<Question> findAllByOrderByCreationDatetimeDesc();
 
     List<Question> findByTagsContainingOrderByCreationDatetimeDesc(String tag);

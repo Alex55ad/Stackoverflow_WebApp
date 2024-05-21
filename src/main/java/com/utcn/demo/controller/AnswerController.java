@@ -18,7 +18,7 @@ import java.util.Optional;
 public class AnswerController {
     private final AnswerService answerService;
 
-    @GetMapping("/getAllAnswers")
+    @GetMapping("/getAll")
     public List<Answer> retrieveAllAnswers() {
         return answerService.retrieveAnswers();
     }
@@ -36,14 +36,12 @@ public class AnswerController {
         return answerService.createAnswer(question, author, text, pictureUrl);
     }
 
-    @PutMapping("/update/{id}")
-    public Answer updateAnswer(@PathVariable Long id,
-                               @RequestParam String text,
-                               @RequestParam String pictureUrl) {
-        return answerService.updateAnswer(id, text, pictureUrl);
+    @PutMapping("/update")
+    public Answer updateAnswer(@RequestBody Answer answer) {
+        return answerService.updateAnswer(answer);
     }
 
-    @PostMapping("/insertAnswer")
+    @PostMapping("/insert")
     public Answer insertAnswer(@RequestBody Answer answer) {
         return answerService.insertAnswer(answer);
     }
@@ -60,7 +58,12 @@ public class AnswerController {
         return answerService.downvoteAnswer(answerId, username);
     }
 
-    @DeleteMapping("/deleteAnswerById")
+    @GetMapping("/getById/{answerId}")
+    public Answer getAnswerById(@PathVariable Long answerId){
+       return answerService.getAnswerById(answerId);
+    }
+
+    @DeleteMapping("/deleteById")
     public void deleteAnswerById(@RequestParam Long id) {
         answerService.deleteAnswerById(id);
     }

@@ -29,6 +29,10 @@ public class AnswerService {
         return answerRepository.findAll();
     }
 
+    public Answer getAnswerById(Long id){
+        return answerRepository.getAnswerById(id);
+    }
+
     public Answer insertAnswer(Answer answer) {
         return answerRepository.save(answer);
     }
@@ -59,13 +63,14 @@ public class AnswerService {
         else throw new RuntimeException("Question not found");
     }
 
-    public Answer updateAnswer(Long id, String text, String pictureUrl) {
-        Optional<Answer> optionalAnswer = answerRepository.findById(id);
+    public Answer updateAnswer(Answer answer) {
+        Optional<Answer> optionalAnswer = answerRepository.findById(answer.getId());
         if (optionalAnswer.isPresent()) {
-            Answer answer = optionalAnswer.get();
-            answer.setText(text);
-            answer.setImageUrl(pictureUrl);
-            return answerRepository.save(answer);
+            Answer ans = optionalAnswer.get();
+            ans.setTitle(answer.getTitle());
+            ans.setText(answer.getText());
+            ans.setImageUrl(answer.getImageUrl());
+            return answerRepository.save(ans);
         } else {
             throw new RuntimeException("Answer not found");
         }
