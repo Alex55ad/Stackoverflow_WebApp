@@ -4,7 +4,7 @@ import { Modal, TextInput, Textarea, Button, Select } from '@mantine/core';
 function NewAnswerModal({ opened, onClose, onSubmit, initialAnswer, questions }) {
   const [title, setTitle] = useState('');
   const [text, setText] = useState('');
-  const [pictureUrl, setPictureUrl] = useState('');
+  const [imageUrl, setPictureUrl] = useState('');
   const [question, setQuestion] = useState(null);
   const [answerId, setAnswerId] = useState(null);
   const [author, setAuthor] = useState('');
@@ -24,7 +24,7 @@ function NewAnswerModal({ opened, onClose, onSubmit, initialAnswer, questions })
     if (initialAnswer) {
       setTitle(initialAnswer.title);
       setText(initialAnswer.text);
-      setPictureUrl(initialAnswer.pictureUrl);
+      setPictureUrl(initialAnswer.imageUrl);
       setQuestion(initialAnswer.question);
       setAnswerId(initialAnswer.id);
     } else {
@@ -37,7 +37,7 @@ function NewAnswerModal({ opened, onClose, onSubmit, initialAnswer, questions })
   }, [initialAnswer]);
 
   const handleSubmit = () => {
-    onSubmit({ id: answerId, question ,author, title, text, pictureUrl });
+    onSubmit({ id: answerId, question ,author, title, text, imageUrl });
     onClose();
   };
 
@@ -80,7 +80,7 @@ function NewAnswerModal({ opened, onClose, onSubmit, initialAnswer, questions })
       <TextInput
         label="Picture URL"
         placeholder="Enter picture URL"
-        value={pictureUrl}
+        value={imageUrl}
         onChange={(event) => setPictureUrl(event.currentTarget.value)}
       />
       <Button onClick={handleSubmit} style={{ marginTop: '10px' }}>Submit</Button>

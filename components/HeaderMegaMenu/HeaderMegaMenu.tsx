@@ -106,7 +106,7 @@ export function HeaderMegaMenu() {
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
           <Box>
-            <Text size="sm">{user ? user.username: 'Not logged in'}</Text>
+            <Text size="sm">{user ? user.username: 'Not logged in'}{'  '}{user ? user.type: ''}</Text>
           </Box>
           <Group h="100%" gap={0} visibleFrom="sm">
             <a href="/" className={classes.link}>

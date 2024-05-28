@@ -192,6 +192,7 @@ export function Questions() {
 
   if (loading) return <p>Loading questions...</p>;
   if (error) return <p>Error loading questions: {error}</p>;
+  if (usr && usr.type === 'BANNED') return <p>You are banned and cannot view the contents of this page.</p>;
 
   return (
     <>

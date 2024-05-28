@@ -106,6 +106,26 @@ export function Answers() {
     setModalOpened(true);
   };
 
+  useEffect(() => {
+    const updateUserScores = async () => {
+      try {
+        // Loop through each question and extract the username of the author
+        const usernames = answers.map(answer => answer.author.username);
+        
+        for (const username of usernames) {
+          await fetch(`http://localhost:8080/users/calculateScore?username=${username}`,{method: 'POST',});
+        }
+      } catch (error) {
+        console.error('Error updating user scores:', error);
+      }
+    };
+
+    // Call the function to update user scores when questions change
+    if (answers.length > 0) {
+      updateUserScores();
+    }
+  }, [answers]);
+
   const handleUpvote = async (answerId) => {
     try {
       // Upvote the answer
@@ -148,6 +168,7 @@ export function Answers() {
 
   if (loading) return <p>Loading answers...</p>;
   if (error) return <p>Error loading answers: {error}</p>;
+  if (usr && usr.type === 'BANNED') return <p>You are banned and cannot view the contents of this page.</p>;
 
   return (
     <>
@@ -179,7 +200,7 @@ export function Answers() {
             {answers.map((answer) => (
               <tr key={answer.id}>
                 <td>
-                  <img src={answer.pictureUrl} alt="Answer Image" style={{ width: '200px', height: '200px' }} />
+                  <img src={answer.imageUrl} alt="Answer Image" style={{ width: '200px', height: '200px' }} />
                 </td>
                 <td style={{ textAlign: 'left', paddingBottom: '20px' }}>
                   <div>
